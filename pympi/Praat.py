@@ -16,7 +16,7 @@ class TextGrid:
     :var list tiers: Internal (unsorted) list of tiers.
     :var str codec: Codec of the input file.
     """
-    def __init__(self, file_path=None, xmin=0, xmax=None, codec='utf-8'):
+    def __init__(self, file_path=None, xmin=0, xmax=None, codec='utf-8', ifile=None):
         """Construct either a new TextGrid object or read one from a
         file/stream. When you create an empty TextGrid you must at least
         specify the xmax. When you want to load a TextGrid from file you need
@@ -33,15 +33,17 @@ class TextGrid:
         """
         self.tiers = []
         self.codec = codec
-        if not file_path:
+        if ifile:
+            self.from_file(ifile, codec)
+        elif file_path:
+            with open(file_path, 'rb') as f:
+                self.from_file(f, codec)
+        else:
             if xmax is None:
                 raise Exception('No xmax specified')
             self.tier_num = 0
             self.xmin = xmin
             self.xmax = xmax
-        else:
-            with open(file_path, 'rb') as f:
-                self.from_file(f, codec)
 
     def from_file(self, ifile, codec='ascii'):
         """Read textgrid from stream.
