@@ -1715,6 +1715,7 @@ def to_adocument(eaf_obj, pretty=True):
         n = etree.SubElement(ADOCUMENT, 'LICENSE', {'LICENSE_URL': m[1]})
         n.text = m[0]
     # Header
+    eaf_obj.header['TIME_UNITS'] = "milliseconds"
     HEADER = etree.SubElement(ADOCUMENT, 'HEADER', eaf_obj.header)
     # Media descriptiors
     for m in eaf_obj.media_descriptors:
